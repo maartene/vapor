@@ -9,12 +9,22 @@ public func routes(_ router: Router) throws {
     
     // Basic "Hello, world!" example
     router.get("hello") { req -> Future<View> in
-        return try req.view().render("todo", ["name": "Leaf"])
+        return try req.view().render("hello", ["name": "Leaf"])
     }
 
     // Example of configuring a controller
     let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    router.get("api/todos", use: todoController.index)
+    router.post("api/todos", use: todoController.create)
+    router.delete("api/todos", Todo.parameter, use: todoController.delete)
+    
+    router.get("todos") { req -> Future<View> in
+        return try req.view().render("todo", ["todos": todoController.index(req)])
+    }
+    
+    router.post("todos")
+    { req -> Future<View> in
+        try todoController.create(req)
+        return try req.view().render("todo", ["todos": todoController.index(req)])
+    }
 }
