@@ -2,17 +2,33 @@
 <html>
     <head>
         <title>Todos</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     </head>
-    <body>
-        <h1>Todo's:</h1>
-        <ul>
-        #for(todo in todos) {
-            <li>#(todo.title)</li>
-        }
-        </ul>
-        <form action="/todos" method="POST">
-            <input type="text" name="title">
-            <input type="submit">
-        </form>
+    <body class="container">
+        <header>
+            <h1>Todo's:</h1>
+        </header>
+        <section>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="list-group" id="todosList">
+                    #for(todo in todos) {
+                        <li class="list-group-item" id="todoItem#(todo.id)">#(todo.title)
+                            <button onClick="removeItem(#(todo.id))">Delete</button>
+                        </li>
+                    }
+                    </ul>
+                    <form action="#" method="POST" id="newTodoForm">
+                        <div class="form-group">
+                            <label for="newTodoTitle">New todo: </label>
+                            <input class="form-control" name="title" id="newTodoTitle">
+                        </div>
+                        <button class="btn btn-default">Add</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+         <script src="/scripts/jquery-3.3.1.min.js" charset="utf-8"></script>
+        <script src="/scripts/main.js" charset="utf-8"></script>
     </body>
 </html>
