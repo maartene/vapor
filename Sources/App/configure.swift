@@ -19,10 +19,16 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
     services.register(middlewares)
 
-    // Configure a SQLite database
-    let postgresql = try PostgreSQLDatabase(config: PostgreSQLDatabaseConfig(hostname: "127.0.0.1", port: 5432, username: "maartene", database: "todos", password: nil, transport: .cleartext))
+    // Configure a PostgreSQL database
+    let dbConfig: PostgreSQLDatabaseConfig
+    if let url = Environment.get("DATABASE_URL"), let psqlConfig = PostgreSQLDatabaseConfig(url: url) {
+        dbConfig = psqlConfig
+    } else {
+        dbConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "maartene", database: "todo", password: nil)
+    }
+    let postgresql = try PostgreSQLDatabase(config: dbConfig)
 
-    // Register the configured SQLite database to the database config.
+    // Register the configured PostgreSQL database to the database config.
     var databases = DatabasesConfig()
     databases.add(database: postgresql, as: .psql)
     services.register(databases)
