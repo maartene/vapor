@@ -24,7 +24,7 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     if let url = Environment.get("DATABASE_URL"), let psqlConfig = PostgreSQLDatabaseConfig(url: url) {
         dbConfig = psqlConfig
     } else {
-        dbConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "maartene", database: "todo", password: nil)
+        dbConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "maartene", database: "todos", password: nil)
     }
     let postgresql = try PostgreSQLDatabase(config: dbConfig)
 
